@@ -1,4 +1,3 @@
-/* src/controllers/artists.js */
 const { Artist } = require('../models');
 
 exports.create = (req, res) => {
@@ -29,6 +28,17 @@ exports.updateArtist = (req, res) => {
             res.status(404).json({ error: 'The artist could not be found.' });
         } else {
             res.status(200).json(rowsUpdated);
+        }
+    });
+};
+
+exports.deleteArtist = (req, res) => {
+    const { id } = req.params;
+    Artist.destroy({ where: { id } }).then(deleted => {
+        if (!deleted) {
+            res.status(404).json({ error: 'The artist could not be found.' });
+        } else {
+            res.status(204).json(deleted);
         }
     });
 };
