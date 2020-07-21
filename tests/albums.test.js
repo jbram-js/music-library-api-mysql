@@ -67,4 +67,44 @@ describe('/albums', () => {
         });
     });
   });
+  describe('with albums in the database', () => {
+    let albums;
+    beforeEach((done) => {
+      Promise.all([
+        Album.create({ name: 'Josh Album', year: 1990, artistId: artist.id }),
+        Album.create({ name: 'Jake Album', year: 1993, artistId: artist.id }),
+        Album.create({ name: 'Joe Album', year: 1995, artistId: artist.id }),
+      ]).then((documents) => {
+        albums = documents;
+        done();
+      });
+    });
+
+    describe('GET /artists/:artistId/albums', () => {
+      it('gets an artists albums by artist id', (done) => {
+        request(app)
+          .get(`/artists/${artist.id}/albums`)
+          .then((res) => {
+            expect(res.status).to.equal(200);
+            expect(res.body.length).to.equal(3);
+            res.body.forEach((album) => {
+              const expected = albums.find((a) => a.id === album.id);
+              expect(album.name).to.equal(expected.name);
+              expect(album.year).to.equal(expected.year);
+            });
+            done();
+          });
+      });
+
+      it('returns a 404 if the artist does not exist', (done) => {
+        request(app)
+          .get('/artists/12345/albums')
+          .then((res) => {
+            expect(res.status).to.equal(404);
+            expect(res.body.error).to.equal('The artist could not be found.');
+            done();
+          });
+      });
+    });
+  });
 });
