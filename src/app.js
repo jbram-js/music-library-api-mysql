@@ -28,4 +28,8 @@ app.post('/artists/:artistId/albums', albumControllers.createAlbum);
 
 app.get('/artists/:artistId/albums', albumControllers.getAlbumsByArtistId);
 
+app.patch('/albums/:albumId', albumControllers.updateAlbumById);
+
+app.delete('/albums/:albumId', albumControllers.deleteAlbum);
+
 module.exports = app;
