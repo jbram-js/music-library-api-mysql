@@ -1,10 +1,9 @@
 const express = require('express');
 
-const artistRouter = require('./routes/artist');
-const albumRouter = require('./routes/album');
-
 const artistControllers = require('./controllers/artists');
 const albumControllers = require('./controllers/album');
+const songControllers = require('./controllers/song');
+
 
 const app = express();
 
@@ -31,5 +30,9 @@ app.get('/artists/:artistId/albums', albumControllers.getAlbumsByArtistId);
 app.patch('/albums/:albumId', albumControllers.updateAlbumById);
 
 app.delete('/albums/:albumId', albumControllers.deleteAlbum);
+
+// Song
+
+app.post('/albums/:albumId/song', songControllers.createSong);
 
 module.exports = app;

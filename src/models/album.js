@@ -1,4 +1,4 @@
-/* src/models/artist.js */
+/* src/models/album.js */
 module.exports = (sequelize, DataTypes) => {
     const schema = {
         name: DataTypes.STRING,
